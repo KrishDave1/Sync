@@ -1,11 +1,29 @@
-import { FC } from 'react'
+/** @format */
 
-interface pageProps {
-  
-}
+"use client";
 
-const page: FC<pageProps> = ({}) => {
-  return <div>page</div>
-}
+import { FC } from "react";
+import { Session } from "next-auth";
+import { signOut, useSession } from "next-auth/react";
+import { Button } from "@/components/ui/Button";
 
-export default page
+interface pageProps {}
+
+const Dashboard: FC<pageProps> = ({}) => {
+  const { data: session } = useSession();
+
+  return (
+    <>
+      <div>page</div>
+      <Button
+        onClick={() => {
+          signOut();
+        }}
+      >
+        Sign Out
+      </Button>
+    </>
+  );
+};
+
+export default Dashboard;

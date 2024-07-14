@@ -30,6 +30,13 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: getGoogleCredentials().clientId,
       clientSecret: getGoogleCredentials().clientSecret,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
   ],
   callbacks: {
@@ -38,6 +45,7 @@ export const authOptions: NextAuthOptions = {
 
       if (!dbUser) {
         token.id = user!.id; //IMP -> !. is basically a non-null assertion operator
+
         return token;
       }
       return {
