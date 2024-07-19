@@ -2,6 +2,7 @@
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { Icon, Icons } from "@/components/Icons";
+import SignOutButton from "@/components/SignOutButton";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,10 +32,10 @@ const sidebarOptions: SidebarOption[] = [
 const Layout = async ({ children }: LayoutProps) => {
   const session = await getServerSession(authOptions);
 
-  if (!session) notFound();
+  if (!session) notFound(); // If the user is not logged in, Do not show him the page and show a 404 page instead
 
   return (
-    <div className='w-full flex h-screen'>
+    <div className='w-full h-screen grid grid-cols-[20rem_auto]'>
       <div className='flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
         <Link href='/dashboard' className='flex h-16 shrink-0 items-center'>
           <Icons.Logo className='h-8 w-auto text-indigo-600' />
@@ -80,6 +81,7 @@ const Layout = async ({ children }: LayoutProps) => {
                     referrerPolicy='no-referrer'
                     src={session.user.image || ""}
                     alt='User profile picture'
+                    className='rounded-full'
                   />
                 </div>
 
@@ -92,11 +94,13 @@ const Layout = async ({ children }: LayoutProps) => {
                 </div>
                 {/* By default, NextJs images are absolute */}
               </div>
+              <SignOutButton className='h-full aspect-square' />{" "}
+              {/* Why not directly rendered the button here.Because this page is a server component and a button click is a client event to handle so used a new file */}
             </li>
           </ul>
         </nav>
       </div>
-      {children}
+      <div>{children}</div>
     </div>
   );
 };
