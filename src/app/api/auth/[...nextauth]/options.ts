@@ -45,6 +45,9 @@ export const authOptions: NextAuthOptions = {
 
       if (!dbUser) {
         token.id = user!.id; //IMP -> !. is basically a non-null assertion operator
+        token.name = user!.name;
+        token.email = user!.email;
+        token.image = user!.image;
 
         return token;
       }
@@ -60,7 +63,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
-        session.user.image = token.picture;
+        session.user.image = token.image as string;
       }
 
       return session;
