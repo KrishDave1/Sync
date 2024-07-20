@@ -1,8 +1,10 @@
 /** @format */
 
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import FriendRequestsSidebarOptions from "@/components/FriendRequestsSidebarOptions";
 import { Icon, Icons } from "@/components/Icons";
 import SignOutButton from "@/components/SignOutButton";
+import { fetchRedis } from "@/helpers/redis";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +35,13 @@ const Layout = async ({ children }: LayoutProps) => {
   const session = await getServerSession(authOptions);
 
   if (!session) notFound(); // If the user is not logged in, Do not show him the page and show a 404 page instead
+
+  const unseenRequestCount = (
+    await fetchRedis(
+      "smembers", // smembers is a redis command to get all the members of a set
+      `user:${session.user.id}:incoming_friend_requests`
+    ) as User[]
+  ).length;
 
   return (
     <div className='w-full h-screen grid grid-cols-[20rem_auto]'>
@@ -71,6 +80,13 @@ const Layout = async ({ children }: LayoutProps) => {
                   );
                 })}
               </ul>
+            </li>
+
+            <li>
+              <FriendRequestsSidebarOptions
+                sessionId={session.user.id}
+                initialUnseenRequestCount={unseenRequestCount}
+              />
             </li>
 
             <li className='-mx-6 mt-auto flex items-center'>
