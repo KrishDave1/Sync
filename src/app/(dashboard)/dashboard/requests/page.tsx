@@ -16,12 +16,12 @@ const page: FC = async ({}) => {
   const incomingSenderIds = (await fetchRedis(
     "smembers",
     `user:${session.user.id}:incoming_friend_requests`
-  )) as string[];
+  )) as string[]; //Here we are fetching the ids of the people who have sent friend requests to the currently logged in user.It might be more than one person so we are using smembers to get all the ids
 
   // get the emails of the ids fetched above
   const incomingFriendRequests = await Promise.all(
     incomingSenderIds.map(async (senderId) => {
-      const sender = (await fetchRedis("get", `user:${senderId}`)) as string;
+      const sender = (await fetchRedis("get", `user:${senderId}`)) as string; //! Redis stores the user object as a string so we have to parse it.
       const senderParsed = JSON.parse(sender) as User;
       return {
         senderId,

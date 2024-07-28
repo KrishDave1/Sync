@@ -111,7 +111,7 @@ const Layout = async ({ children }: LayoutProps) => {
                 {/* By default, NextJs images are absolute */}
               </div>
               <SignOutButton className='h-full aspect-square' />{" "}
-              {/* Why not directly rendered the button here.Because this page is a server component and a button click is a client event to handle so used a new file */}
+              {/* //! Why not directly rendered the button here.Because this page is a server component and a button click is a client event to handle so used a new file */}
             </li>
           </ul>
         </nav>

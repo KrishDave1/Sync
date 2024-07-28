@@ -27,6 +27,16 @@ const FriendRequests: FC<FriendRequestsProps> = ({
 
     setFriendRequests((prev) =>
       prev.filter((request) => request.senderId !== senderId)
+    ); //Here we are taking the latest state and filtering out the request of the user who has sent the friend request
+
+    router.refresh();
+  };
+
+  const denyFriend = async (senderId: string) => {
+    await axios.post("/api/requests/deny", { id: senderId });
+
+    setFriendRequests((prev) =>
+      prev.filter((request) => request.senderId !== senderId)
     );
 
     router.refresh();
