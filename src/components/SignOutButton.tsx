@@ -8,12 +8,14 @@ import { Button } from "./ui/Button";
 import { signOut } from "next-auth/react";
 import { toast, useToast } from "./ui/use-toast";
 import { Loader2, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface SignOutButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
 const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
   const [isSigningOut, setisSigningOut] = useState<boolean>(false);
   const { toast } = useToast();
+  const router = useRouter();
   return (
     <Button
       {...props}
@@ -22,6 +24,11 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
         setisSigningOut(true);
         try {
           await signOut();
+          toast({
+            title: "Sign out successful",
+            description: "You have been signed out",
+          });
+          router.replace("/login");
         } catch (error) {
           toast({
             title: "Sign out failed",
