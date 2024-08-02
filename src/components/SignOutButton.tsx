@@ -27,9 +27,6 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
             title: "Sign out successful",
             description: "You have been signed out",
           });
-          console.log("sign out successful");
-          router.push("/login");
-          console.log("redirecting to login");
         } catch (error) {
           toast({
             title: "Sign out failed",
@@ -39,7 +36,6 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
           });
         } finally {
           setisSigningOut(false);
-          console.log("sign out finished");
         }
       }}
     >
