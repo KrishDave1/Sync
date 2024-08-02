@@ -3,7 +3,6 @@
 "use client";
 
 import { ButtonHTMLAttributes, FC, useState } from "react";
-import { boolean } from "zod";
 import { Button } from "./ui/Button";
 import { signOut } from "next-auth/react";
 import { toast, useToast } from "./ui/use-toast";
@@ -23,12 +22,14 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
       onClick={async () => {
         setisSigningOut(true);
         try {
-          await signOut();
+          await signOut({ callbackUrl: "/login" });
           toast({
             title: "Sign out successful",
             description: "You have been signed out",
           });
-          router.replace("/login");
+          console.log("sign out successful");
+          router.push("/login");
+          console.log("redirecting to login");
         } catch (error) {
           toast({
             title: "Sign out failed",
@@ -38,6 +39,7 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
           });
         } finally {
           setisSigningOut(false);
+          console.log("sign out finished");
         }
       }}
     >
