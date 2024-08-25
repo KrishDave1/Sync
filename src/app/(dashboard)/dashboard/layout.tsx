@@ -3,7 +3,9 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import FriendRequestsSidebarOptions from "@/components/FriendRequestsSidebarOptions";
 import { Icon, Icons } from "@/components/Icons";
+import SidebarChatList from "@/components/SidebarChatList";
 import SignOutButton from "@/components/SignOutButton";
+import { getFriendsByUserId } from "@/helpers/get-friends-by-userId";
 import { fetchRedis } from "@/helpers/redis";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
@@ -36,11 +38,13 @@ const Layout = async ({ children }: LayoutProps) => {
 
   if (!session) notFound(); // If the user is not logged in, Do not show him the page and show a 404 page instead
 
+  const friends = await getFriendsByUserId(session.user.id);
+
   const unseenRequestCount = (
-    await fetchRedis(
+    (await fetchRedis(
       "smembers", // smembers is a redis command to get all the members of a set
       `user:${session.user.id}:incoming_friend_requests`
-    ) as User[]
+    )) as User[]
   ).length;
 
   return (
@@ -50,13 +54,18 @@ const Layout = async ({ children }: LayoutProps) => {
           <Icons.Logo className='h-8 w-auto text-indigo-600' />
         </Link>
 
-        <div className='text-xs font-semibold leading-6 text-gray-400'>
-          Your chats
-        </div>
+        {friends.length > 0 ? (
+          <div className='text-xs font-semibold leading-6 text-gray-400'>
+            Your chats
+          </div>
+        ) : null}
 
         <nav className='flex flex-1 flex-col'>
           <ul role='list' className='flex flex-1 flex-col gap-y-7'>
-            <li>Chats list of the current user</li>
+            <li>
+              {/* Render a client component here as we need to show chats in real time */}
+              <SidebarChatList friends={friends} sessionId={session.user.id} />
+            </li>
             <li>
               <div className='text-xs font-semibold leading-6 text-gray-400'>
                 Overview
@@ -79,14 +88,13 @@ const Layout = async ({ children }: LayoutProps) => {
                     </li>
                   );
                 })}
+                <li>
+                  <FriendRequestsSidebarOptions
+                    sessionId={session.user.id}
+                    initialUnseenRequestCount={unseenRequestCount}
+                  />
+                </li>
               </ul>
-            </li>
-
-            <li>
-              <FriendRequestsSidebarOptions
-                sessionId={session.user.id}
-                initialUnseenRequestCount={unseenRequestCount}
-              />
             </li>
 
             <li className='-mx-6 mt-auto flex items-center'>

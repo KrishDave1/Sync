@@ -3,6 +3,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { fetchRedis } from "@/helpers/redis";
 import { db } from "@/lib/db";
+import { messageArrayValidator } from "@/schemas/message";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { FC } from "react";
@@ -15,15 +16,20 @@ interface PageProps {
 
 async function getChatMessages(chatId: string) {
   try {
-    const results: string[] = await fetchRedis('zrange', 
-      `chat:${chatId}:messages`,
+    const results: string[] = await fetchRedis(
+      "zrange",
+      `chat:${chatId}:messages`, // Initially the array you get from zrange will be JSON stringified. So you need to parse it to get the actual message object.
       0,
       -1 // Fetching all messages from index 0 to index -1.
-    )
+    );
 
-    const dbMessages = results.map((message) => JSON.parse(message) as Message)
+    const dbMessages = results.map((message) => JSON.parse(message) as Message);
+
+    const reverseDbMessages = dbMessages.reverse(); // Reversing the messages to get the latest messages first.
+
+    const messages = messageArrayValidator.parse(reverseDbMessages);
   } catch (error) {
-    notFound(); 
+    notFound();
   }
 }
 
