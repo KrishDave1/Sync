@@ -8,6 +8,8 @@ import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 import Image from "next/image";
+import Messages from "@/components/Messages";
+import ChatInput from "@/components/ChatInput";
 
 interface PageProps {
   params: {
@@ -29,6 +31,8 @@ async function getChatMessages(chatId: string) {
     const reverseDbMessages = dbMessages.reverse(); // Reversing the messages to get the latest messages first.
 
     const messages = messageArrayValidator.parse(reverseDbMessages);
+
+    return messages; //Returning the messages.I Got a void error because of it.
   } catch (error) {
     notFound();
   }
@@ -67,19 +71,26 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
                 fill
                 referrerPolicy='no-referrer'
                 src={chatPartner.image}
-                alt={`${chatPartner.name} profile picture`}
+                alt={`${chatPartner.name}'s profile picture`}
                 className='rounded-full'
               />
             </div>
           </div>
 
+          <div className='flex flex-col leading-tight'>
+            <div className='text-xl flex items-center'>
+              <span className='text-gray-700 mr-3 font-semibold'>
+                {chatPartner.name}
+              </span>
+            </div>
 
-
-
-
-          
+            <span className='text-sm text-gray-600'>{chatPartner.email}</span>
+          </div>
         </div>
       </div>
+
+      <Messages initialMessages={initialMessages} sessionId={session.user.id} />
+      <ChatInput chatPartner={chatPartner} />
     </div>
   );
 };
