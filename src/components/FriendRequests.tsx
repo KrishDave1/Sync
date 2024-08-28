@@ -3,11 +3,13 @@
 "use client";
 
 import { Check, UserPlus, X } from "lucide-react";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button } from "./ui/Button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
+import { pusherClient } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 interface FriendRequestsProps {
   incomingFriendRequests: IncomingFriendRequest[];
@@ -24,9 +26,24 @@ const FriendRequests: FC<FriendRequestsProps> = ({
   );
   const { toast } = useToast();
 
+  useEffect(() => {
+    pusherClient.subscribe(
+      toPusherKey(`user:${sessionId}:incoming_friend_requests`)
+    );
+
+    // pusherClient.bind(
+    //   toPusherKey(`user:${sessionId}:incoming_friend_requests`),
+    //   (data: IncomingFriendRequest) => {
+    //     setFriendRequests((prev) => [...prev, data]);
+    //   }
+    // );
+  }, []);
+
   const acceptFriend = async (senderId: string) => {
     try {
-      const response = await axios.post("/api/friends/accept", { id: senderId });
+      const response = await axios.post("/api/friends/accept", {
+        id: senderId,
+      });
 
       setFriendRequests((prev) =>
         prev.filter((request) => request.senderId !== senderId)
@@ -35,18 +52,18 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       toast({
         title: "Friend request accepted",
         description: "You have a new friend",
-      })
+      });
     } catch (error) {
       toast({
         title: "Friend request error",
-        description: error instanceof Error ? error.message : "An unknown error occurred",
+        description:
+          error instanceof Error ? error.message : "An unknown error occurred",
         variant: "destructive",
       });
     } finally {
       router.refresh();
     }
   };
-  
 
   const denyFriend = async (senderId: string) => {
     await axios.post("/api/friends/deny", { id: senderId });
