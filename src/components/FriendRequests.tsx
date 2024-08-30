@@ -28,15 +28,22 @@ const FriendRequests: FC<FriendRequestsProps> = ({
 
   useEffect(() => {
     pusherClient.subscribe(
-      toPusherKey(`user:${sessionId}:incoming_friend_requests`)
-    );
+      toPusherKey(`user:${sessionId}:incoming_friend_requests`) //toPusherKey is used because pusher does not accept colon in channel name and so we replace it with __
+    ); //Here we are just subscribing(looking if anything new is added) to the channel
 
-    // pusherClient.bind(
-    //   toPusherKey(`user:${sessionId}:incoming_friend_requests`),
-    //   (data: IncomingFriendRequest) => {
-    //     setFriendRequests((prev) => [...prev, data]);
-    //   }
-    // );
+    const friendRequestHandler = () => {
+      // setFriendRequests((prev) => [...prev, data]);
+      console.log("Friend request received");
+    };
+
+    pusherClient.bind("incoming_friend_requests", friendRequestHandler);
+
+    return () => {
+      pusherClient.unsubscribe(
+        toPusherKey(`user:${sessionId}:incoming_friend_requests`) //toPusherKey is used because pusher does not accept colon in channel name and so we replace it with __
+      );
+      pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
+    }
   }, []);
 
   const acceptFriend = async (senderId: string) => {

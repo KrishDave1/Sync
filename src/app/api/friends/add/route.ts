@@ -7,6 +7,8 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 import { fetchRedis } from "@/helpers/redis";
 import { db } from "@/lib/db";
 import { z } from "zod";
+import { pusherServer } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 export async function POST(req: Request) {
   try {
@@ -66,7 +68,14 @@ export async function POST(req: Request) {
       return new Response("Your friend has already added you", { status: 400 });
     }
 
-    //valid friend request
+    //valid friend request , so send the friend request
+
+    console.log("Trigerred action now")
+
+    pusherServer.trigger(toPusherKey(`user:${idToAdd}:incoming_friend_requests`), "incoming_friend_requests", {
+      senderId: session.user.id,
+      senderEmail: session.user.email,
+    });
     db.sadd(`user:${idToAdd}:incoming_friend_requests`, session.user.id);
 
     return new Response("Friend request sent", { status: 200 });

@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <AuthProvider>
-        <body className={inter.className}>
+        <body className={inter.className} suppressHydrationWarning={true}>
           {children}
           <Toaster />
         </body>
