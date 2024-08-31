@@ -6,6 +6,8 @@ import { fetchRedis } from "@/helpers/redis";
 import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
 import { Message, messageValidator } from "@/schemas/message";
+import { pusherServer } from "@/lib/pusher";
+import { toPusherKey } from "@/lib/utils";
 
 export async function POST(req: Request) {
   try {
@@ -54,6 +56,13 @@ export async function POST(req: Request) {
     };
 
     const message = messageValidator.parse(messageData);
+
+    //Notify all connected chat room clients
+    pusherServer.trigger(
+      toPusherKey(`chat:${chatId}`),
+      "incoming-message",
+      message
+    );
 
     await db.zadd(`chat:${chatId}:messages`, {
       score: timestamp,

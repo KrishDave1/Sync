@@ -1,15 +1,17 @@
 /** @format */
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, toPusherKey } from "@/lib/utils";
 import { Message } from "@/schemas/message";
 import { format } from "date-fns";
-import { FC, useRef, useState } from "react";
+import { FC, use, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { pusherClient } from "@/lib/pusher";
 
 interface MessagesProps {
   initialMessages: Message[];
   sessionId: string;
+  chatId: string;
   sessionImg: string | null | undefined;
   chatPartner: User;
 }
@@ -17,6 +19,7 @@ interface MessagesProps {
 const Messages: FC<MessagesProps> = ({
   initialMessages,
   sessionId,
+  chatId,
   sessionImg,
   chatPartner,
 }) => {
@@ -26,6 +29,21 @@ const Messages: FC<MessagesProps> = ({
   const formatTimestamp = (timestamp: number) => {
     return format(timestamp, "HH:mm");
   };
+
+  useEffect(() => {
+    pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
+
+    const messageHandler = (message: Message) => {
+      setMessages((prev) => [message, ...prev]); // Adding the new message to the top of the messages array so that the latest message is shown first.
+    };
+
+    pusherClient.bind("incoming-message", messageHandler);
+
+    return () => {
+      pusherClient.unsubscribe(toPusherKey(`chat:${chatId}`));
+      pusherClient.unbind("incoming-message", messageHandler);
+    };
+  }, []);
 
   return (
     <div

@@ -31,19 +31,21 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       toPusherKey(`user:${sessionId}:incoming_friend_requests`) //toPusherKey is used because pusher does not accept colon in channel name and so we replace it with __
     ); //Here we are just subscribing(looking if anything new is added) to the channel
 
-    const friendRequestHandler = () => {
-      // setFriendRequests((prev) => [...prev, data]);
-      console.log("Friend request received");
+    const friendRequestHandler = ({
+      senderId,
+      senderEmail,
+    }: IncomingFriendRequest) => {
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
     };
 
     pusherClient.bind("incoming_friend_requests", friendRequestHandler);
 
     return () => {
       pusherClient.unsubscribe(
-        toPusherKey(`user:${sessionId}:incoming_friend_requests`) //toPusherKey is used because pusher does not accept colon in channel name and so we replace it with __
+        toPusherKey(`user:${sessionId}:incoming_friend_requests`)
       );
       pusherClient.unbind("incoming_friend_requests", friendRequestHandler);
-    }
+    };
   }, []);
 
   const acceptFriend = async (senderId: string) => {

@@ -20,6 +20,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   const { toast } = useToast();
 
   const sendMessage = async () => {
+    if (!input) return;
     setIsLoading(true);
 
     try {
