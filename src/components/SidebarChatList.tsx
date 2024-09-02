@@ -5,7 +5,7 @@ import { pusherClient } from "@/lib/pusher";
 import { chatHrefConstructor, toPusherKey } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import UnseenChatToast from "./UnseenChatToast";
 
 interface SidebarChatListProps {
@@ -29,6 +29,10 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
 
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
 
+    const friendHandler = () => {
+      router.refresh();
+    };
+
     const chatHandler = (message: ExtendedMessage) => {
       const shouldNotify =
         pathname !==
@@ -49,16 +53,15 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
       setunseenMessages((prev) => [...prev, message]);
     };
 
-    const friendHandler = () => {
-      router.refresh();
-    };
-
     pusherClient.bind("new_message", chatHandler);
     pusherClient.bind("new_friend", friendHandler);
 
     return () => {
       pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:chats`));
       pusherClient.unsubscribe(toPusherKey(`user:${sessionId}:friends`));
+
+      pusherClient.unbind("new_message", chatHandler);
+      pusherClient.unbind("new_friend", friendHandler);
     };
   }, [pathname, sessionId, router]);
 

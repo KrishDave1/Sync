@@ -7,6 +7,7 @@ import { Button } from "./ui/Button";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
+import { useRouter } from "next/navigation";
 
 interface ChatInputProps {
   chatPartner: User;
@@ -18,6 +19,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
   const { toast } = useToast();
+  const router = useRouter();
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -38,6 +40,11 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
       });
     } finally {
       setIsLoading(false);
+      // Scroll to the bottom of the chat
+      const messages = document.getElementById("messages");
+      if (messages) {
+        messages.scrollTop = messages.scrollHeight; //! As Messages are in displayed in reverse order, so we do scrollTop to scroll to the bottom of the chat.
+      }
     }
   };
 
