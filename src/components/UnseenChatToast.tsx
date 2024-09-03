@@ -29,6 +29,8 @@ const UnseenChatToast: FC<UnseenChatToastProps> = ({
         {
           "animate-enter": t.visible,
           "animate-leave": !t.visible,
+          "opacity-100": t.visible, // Ensure opacity is set to 100 when visible
+          "opacity-0": !t.visible,
         }
       )}
     >

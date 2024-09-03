@@ -34,6 +34,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
     };
 
     const chatHandler = (message: ExtendedMessage) => {
+      console.log("Toast check");
       const shouldNotify =
         pathname !==
         `/dashboard/chat/${chatHrefConstructor(sessionId, message.senderId)}`;
@@ -66,7 +67,7 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
   }, [pathname, sessionId, router]);
 
   useEffect(() => {
-    if (pathname.includes("chat")) {
+    if (pathname?.includes("chat")) {
       setunseenMessages((prev) => {
         return prev.filter((msg) => !pathname.includes(msg.senderId));
       });
