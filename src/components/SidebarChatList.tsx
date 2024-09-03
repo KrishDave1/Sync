@@ -34,7 +34,6 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
     };
 
     const chatHandler = (message: ExtendedMessage) => {
-      console.log("Toast check");
       const shouldNotify =
         pathname !==
         `/dashboard/chat/${chatHrefConstructor(sessionId, message.senderId)}`;
