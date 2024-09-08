@@ -51,17 +51,39 @@ export async function POST(req: Request) {
       return new Response("No friend request has been sent", { status: 400 });
     }
 
-    //Trigger the friend request accepted event to the user that sent the friend request to let him know that the request has been accepted
-    pusherServer.trigger(toPusherKey(`user:${idToAdd}`), "new_friend", {});
+    const [userRaw, friendRaw] = (await Promise.all([
+      fetchRedis("get", `user:${session.user.id}`),
+      fetchRedis("get", `user:${idToAdd}`),
+    ])) as [string, string];
 
-    // add the friend to the user's friend list
-    await db.sadd(`user:${session.user.id}:friends`, idToAdd);
+    const user = JSON.parse(userRaw) as User;
+    const friend = JSON.parse(friendRaw) as User;
 
-    // add the user to the friend's friend list
-    await db.sadd(`user:${idToAdd}:friends`, session.user.id);
+    await Promise.all([
+      //Trigger the friend request accepted event to the user that sent the friend request to let him know that the request has been accepted
+      pusherServer.trigger(
+        toPusherKey(`user:${idToAdd}:friends`),
+        "new_friend",
+        user
+      ),
+      pusherServer.trigger(
+        toPusherKey(`user:${session.user.id}:friends`),
+        "new_friend",
+        friend
+      ),
 
-    //Remove the friend request from the user's incoming requests
-    await db.srem(`user:${session.user.id}:incoming_friend_requests`, idToAdd);
+      // add the friend to the user's friend list
+      await db.sadd(`user:${session.user.id}:friends`, idToAdd),
+
+      // add the user to the friend's friend list
+      await db.sadd(`user:${idToAdd}:friends`, session.user.id),
+
+      //Remove the friend request from the user's incoming requests
+      await db.srem(
+        `user:${session.user.id}:incoming_friend_requests`,
+        idToAdd
+      ),
+    ]);
 
     //Learning : sadd is used to add a value to a set, srem is used to remove a value from a set, sismember is used to check if a value exists in a set.
 

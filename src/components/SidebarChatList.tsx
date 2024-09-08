@@ -23,14 +23,15 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ friends, sessionId }) => {
 
   const pathname = usePathname();
   const [unseenMessages, setunseenMessages] = useState<Message[]>([]);
+  const [activeChats, setActiveChats] = useState<User[]>(friends);
 
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:chats`)); // So we get real time updates of message notifications.
 
     pusherClient.subscribe(toPusherKey(`user:${sessionId}:friends`));
 
-    const friendHandler = () => {
-      router.refresh();
+    const friendHandler = (newFriend : User) => {
+      setActiveChats((prev) => [...prev, newFriend]);
     };
 
     const chatHandler = (message: ExtendedMessage) => {

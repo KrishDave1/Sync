@@ -51,7 +51,12 @@ const Layout = async ({ children }: LayoutProps) => {
   return (
     <div className='w-full h-screen grid grid-rows-[10%_auto] lg:grid-rows-none lg:grid-cols-[25%_auto]'>
       <div className='lg:hidden'>
-        <MobileChatLayout />
+        <MobileChatLayout
+          friends={friends}
+          session={session}
+          unseenRequestCount={unseenRequestCount}
+          sidebarOptions={sidebarOptions}
+        />
       </div>
       <div className='hidden lg:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
         <Link href='/dashboard' className='flex h-16 shrink-0 items-center'>
