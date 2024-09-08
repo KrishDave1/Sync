@@ -3,6 +3,7 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import FriendRequestsSidebarOptions from "@/components/FriendRequestsSidebarOptions";
 import { Icon, Icons } from "@/components/Icons";
+import MobileChatLayout from "@/components/MobileChatLayout";
 import SidebarChatList from "@/components/SidebarChatList";
 import SignOutButton from "@/components/SignOutButton";
 import { getFriendsByUserId } from "@/helpers/get-friends-by-userId";
@@ -48,7 +49,10 @@ const Layout = async ({ children }: LayoutProps) => {
   ).length;
 
   return (
-    <div className='w-full h-screen grid grid-cols-[20rem_auto]'>
+    <div className='w-full h-screen grid md:grid-cols-[25%_auto]'>
+      <div className='md:hidden'>
+        <MobileChatLayout />
+      </div>
       <div className='flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
         <Link href='/dashboard' className='flex h-16 shrink-0 items-center'>
           <Icons.Logo className='h-8 w-auto text-indigo-600' />
@@ -125,7 +129,9 @@ const Layout = async ({ children }: LayoutProps) => {
         </nav>
       </div>
       <div>
-        <aside className="max-h-screen container  w-full h-full">{children}</aside>
+        <aside className='max-h-screen container  w-full h-full'>
+          {children}
+        </aside>
       </div>
     </div>
   );

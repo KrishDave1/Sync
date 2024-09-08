@@ -63,8 +63,8 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
 
   return (
     <div className='flex-1 justify-between flex flex-col h-full'>
-      <div className='flex sm:items-center justify-between py-3 border-b-2 border-gray-200'>
-        <div className='relative flex items-center space-x-4'>
+      <div className='flex sm:items-center justify-between py-3 border-b-2 border-gray-200 lg:ml-0 md:ml-2 sm:ml-10'>
+        <div className='relative flex items-center space-x-4 w-64'>
           <div className='relative'>
             <div className='relative w-8 sm:w-12 h-8 sm:h-12'>
               <Image
@@ -96,7 +96,7 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
         sessionImg={session.user.image}
         chatPartner={chatPartner}
       />
-      <div className="bottom-0">
+      <div className='bottom-0'>
         <ChatInput chatPartner={chatPartner} chatId={chatId} />
       </div>
     </div>
