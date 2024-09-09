@@ -5,7 +5,6 @@ import { z } from "zod";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import { fetchRedis } from "@/helpers/redis";
 import { db } from "@/lib/db";
-import { log } from "console";
 import { pusherServer } from "@/lib/pusher";
 import { toPusherKey } from "@/lib/utils";
 
@@ -60,7 +59,7 @@ export async function POST(req: Request) {
     const friend = JSON.parse(friendRaw) as User;
 
     await Promise.all([
-      //Trigger the friend request accepted event to the user that sent the friend request to let him know that the request has been accepted
+      //Trigger the friend request accepted event to the user that sent the friend rbuequest to let him know that the request has been accepted
       pusherServer.trigger(
         toPusherKey(`user:${idToAdd}:friends`),
         "new_friend",
