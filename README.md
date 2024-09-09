@@ -19,7 +19,7 @@
 
 ## Acknowledgements
 
-- [Awesome Button UI Component](https://ui.shadcn.com/)
+- [UI Components](https://ui.shadcn.com/)
 - [Redis Database](https://upstash.com/)
 
 ## Feedback
