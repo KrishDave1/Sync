@@ -23,8 +23,8 @@
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone https://github.com/KrishDave1/Sync.git
+   cd Sync
    ```
    
 2. **Install Dependencies**:
@@ -48,22 +48,22 @@
 
 1. **Build the Docker Image** (if needed):
    ```bash
-   docker build -t messaging-app .
+   docker build -t sync .
    ```
 
 2. **Run the Docker Container**:
    ```bash
-   docker run -p 3000:3000 --name messaging-app-container messaging-app
+   docker run -p 3000:3000 --name sync-container sync
    ```
 
 3. **Stop the Docker Container**:
    ```bash
-   docker stop messaging-app-container
+   docker stop sync-container
    ```
 
 4. **Remove the Docker Container** (optional):
    ```bash
-   docker rm messaging-app-container
+   docker rm sync-container
    ```
 
 ### **Running the Project Using Docker Hub Image**
