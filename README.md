@@ -17,6 +17,76 @@
 - Conditional classes with clsx
 - Variants with class-variance-authority
 
+## Getting Started
+
+### **Running the Project Without Docker**
+
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd <project-directory>
+   ```
+   
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Run the Development Server**:
+   ```bash
+   npm run dev
+   ```
+   The application will be available at `http://localhost:3000`.
+
+4. **Build and Start for Production**:
+   ```bash
+   npm run build
+   npm start
+   ```
+
+### **Running the Project with Docker**
+
+1. **Build the Docker Image** (if needed):
+   ```bash
+   docker build -t messaging-app .
+   ```
+
+2. **Run the Docker Container**:
+   ```bash
+   docker run -p 3000:3000 --name messaging-app-container messaging-app
+   ```
+
+3. **Stop the Docker Container**:
+   ```bash
+   docker stop messaging-app-container
+   ```
+
+4. **Remove the Docker Container** (optional):
+   ```bash
+   docker rm messaging-app-container
+   ```
+
+### **Running the Project Using Docker Hub Image**
+
+1. **Pull the Image from Docker Hub**:
+   ```bash
+   docker pull krishd01/sync
+   ```
+
+2. **Run the Container**:
+   ```bash
+   docker run -p 3000:3000 --name sync-container krishd01/sync
+   ```
+
+3. **Stop and Remove the Container**:
+   ```bash
+   docker stop sync-container
+   docker rm sync-container
+   ```
+
+### **Docker Hub Link**
+- [Docker Hub Image - krishd01/sync](https://hub.docker.com/r/krishd01/sync)
+
 ## Acknowledgements
 
 - [UI Components](https://ui.shadcn.com/)
