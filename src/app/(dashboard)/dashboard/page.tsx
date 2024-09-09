@@ -47,7 +47,7 @@ const Dashboard = async () => {
         friendsWithLastMessage.map((friend) => (
           <div
             key={friend.id}
-            className='relative bg-zinc-50 border-zinc-200 p-3 rounded-md'
+            className='relative bg-zinc-50 border-zinc-200 p-3 rounded-md my-4'
           >
             <div className='absolute right-4 inset-y-0 flex items-center space-x-4'>
               <ChevronRight className='w-7 h-7 text-zinc-400' />
