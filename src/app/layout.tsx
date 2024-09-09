@@ -20,9 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning={true}>
       <AuthProvider>
-        <body className={inter.className} suppressHydrationWarning={true}>
+        <body className={inter.className}>
           {children}
           <Toaster />
         </body>
