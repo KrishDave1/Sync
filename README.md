@@ -9,8 +9,7 @@
 - Protection of sensitive routes
 - Google authentication using OAuth2.0
 
-- Built with TypeScript
-- TailwindCSS
+- Built with TypeScript, Tailwind CSS
 - Icons from Lucide
 
 - Class merging with tailwind-merge
