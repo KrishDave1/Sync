@@ -6,7 +6,7 @@
 - Adding friends and sending friend requests via email
 - Performant database queries with Redis
 - Responsive UI with complete mobile responsiveness built with TailwindCSS
-- Protection of sensitive routes
+- Protection of sensitive routes using middleware
 - Google authentication using OAuth2.0
 
 - Built with TypeScript, Tailwind CSS
