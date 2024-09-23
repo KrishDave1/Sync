@@ -4,7 +4,7 @@
 Sync is a real-time messaging chat application designed for developers. It offers a seamless and responsive user experience with features like real-time messaging, friend requests, and Google authentication. The application is built using modern technologies such as TypeScript, Tailwind CSS, and Next.js, ensuring high performance and scalability.
 
 ## Website Link
-[Sync Application](http://localhost:3000)
+[Sync Application](https://sync-gules.vercel.app/login)
 
 ## Table of Contents
 - [Introduction](#introduction)
