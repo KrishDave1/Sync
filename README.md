@@ -1,4 +1,24 @@
-# Sync - Realtime messaging chat application
+# Sync - Realtime Messaging Chat Application
+
+## Introduction
+Sync is a real-time messaging chat application designed for developers. It offers a seamless and responsive user experience with features like real-time messaging, friend requests, and Google authentication. The application is built using modern technologies such as TypeScript, Tailwind CSS, and Next.js, ensuring high performance and scalability.
+
+## Website Link
+[Sync Application](http://localhost:3000)
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+  - [Running the Project Without Docker](#running-the-project-without-docker)
+  - [Running the Project with Docker](#running-the-project-with-docker)
+  - [Running the Project Using Docker Hub Image](#running-the-project-using-docker-hub-image)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+- [Contact](#contact)
+- [License](#license)
 
 ## Features
 
@@ -16,16 +36,25 @@
 - Conditional classes with clsx
 - Variants with class-variance-authority
 
-## Getting Started
+## Technologies Used
+- **Frontend**: React, Next.js, Tailwind CSS
+- **Backend**: Node.js, Next.js API routes
+- **Database**: Redis (Upstash)
+- **Authentication**: NextAuth.js with Google OAuth2.0
+- **Real-time Communication**: Pusher
+- **Icons**: Lucide
+- **Utilities**: clsx, tailwind-merge, class-variance-authority
 
-### **Running the Project Without Docker**
+## Installation
+
+### Running the Project Without Docker
 
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/KrishDave1/Sync.git
    cd Sync
    ```
-   
+
 2. **Install Dependencies**:
    ```bash
    npm install
@@ -43,7 +72,7 @@
    npm start
    ```
 
-### **Running the Project with Docker**
+### Running the Project with Docker
 
 1. **Build the Docker Image** (if needed):
    ```bash
@@ -65,7 +94,7 @@
    docker rm sync-container
    ```
 
-### **Running the Project Using Docker Hub Image**
+### Running the Project Using Docker Hub Image
 
 1. **Pull the Image from Docker Hub**:
    ```bash
@@ -83,14 +112,22 @@
    docker rm sync-container
    ```
 
-### **Docker Hub Link**
-- [Docker Hub Image - krishd01/sync](https://hub.docker.com/r/krishd01/sync)
+## Usage
+1. **Sign In**: Use Google authentication to sign in.
+2. **Add Friends**: Send friend requests via email.
+3. **Chat**: Start real-time messaging with your friends.
+4. **Responsive Design**: Use the application on any device with a responsive UI.
 
-## Acknowledgements
+## Screenshots
+![Login Page](screenshots/login.png)
+![Dashboard](screenshots/dashboard.png)
+![Chat](screenshots/chat.png)
 
-- [UI Components](https://ui.shadcn.com/)
-- [Redis Database](https://upstash.com/)
+## Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes. Ensure that your code follows the project's coding standards and includes appropriate tests.
 
-## Feedback
+## Contact
+If you have any feedback or questions, please reach out to me at krish.dave@iiitb.ac.in.
 
-If you have any feedback, please reach out to me at krish.dave@iiitb.ac.in
+## License
+This project is licensed under the MIT License.
