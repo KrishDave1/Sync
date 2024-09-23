@@ -8,6 +8,8 @@ import { FC, use, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { pusherClient } from "@/lib/pusher";
 
+export const dynamic = "force-dynamic";
+
 interface MessagesProps {
   initialMessages: Message[];
   sessionId: string;
