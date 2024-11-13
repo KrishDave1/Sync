@@ -1,5 +1,26 @@
 # Sync - Realtime Messaging Chat Application
 
+<p align="center">
+	<!-- local repository, no metadata badges. --></p>
+<p align="center">Built with the tools and technologies:</p>
+<p align="center">
+	<img src="https://img.shields.io/badge/npm-CB3837.svg?style=default&logo=npm&logoColor=white" alt="npm">
+	<img src="https://img.shields.io/badge/PostCSS-DD3A0A.svg?style=default&logo=PostCSS&logoColor=white" alt="PostCSS">
+	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=default&logo=JavaScript&logoColor=black" alt="JavaScript">
+	<img src="https://img.shields.io/badge/sharp-99CC00.svg?style=default&logo=sharp&logoColor=white" alt="sharp">
+	<img src="https://img.shields.io/badge/React-61DAFB.svg?style=default&logo=React&logoColor=black" alt="React">
+	<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=default&logo=Docker&logoColor=white" alt="Docker">
+	<br>
+	<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=default&logo=TypeScript&logoColor=white" alt="TypeScript">
+	<img src="https://img.shields.io/badge/Zod-3E67B1.svg?style=default&logo=Zod&logoColor=white" alt="Zod">
+	<img src="https://img.shields.io/badge/ESLint-4B32C3.svg?style=default&logo=ESLint&logoColor=white" alt="ESLint">
+	<img src="https://img.shields.io/badge/Axios-5A29E4.svg?style=default&logo=Axios&logoColor=white" alt="Axios">
+	<img src="https://img.shields.io/badge/Pusher-300D4F.svg?style=default&logo=Pusher&logoColor=white" alt="Pusher">
+	<img src="https://img.shields.io/badge/datefns-770C56.svg?style=default&logo=date-fns&logoColor=white" alt="datefns">
+</p>
+
+<br />
+
 ## Introduction
 Sync is a real-time messaging chat application designed for developers. It offers a seamless and responsive user experience with features like real-time messaging, friend requests, and Google authentication. The application is built using modern technologies such as TypeScript, Tailwind CSS, and Next.js, ensuring high performance and scalability.
 
