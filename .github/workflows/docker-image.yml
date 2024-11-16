@@ -1,20 +1,61 @@
-name: Sync Docker Image CI
+name: Next.js CI/CD Workflow
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    # Step 1: Check out the repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up Node.js
     - name: Setup Node.js environment
-    - uses: actions/setup-node@v4.1.0
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag sync:$(date +%s)
+      uses: actions/setup-node@v4
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Step 4: Build the Next.js project
+    - name: Build the Next.js application
+      run: npm run build
+
+    # Step 5: Upload build artifacts (optional)
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: nextjs-build
+        path: .next
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Setup Node.js
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4
+
+    # Step 3: Download build artifacts
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: nextjs-build
+
+    # Step 4: Deploy (customize as needed for your deployment target)
+    # Example for deploying to Vercel
+    - name: Deploy to Vercel
+      run: npx vercel --prod
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Add your Vercel token to GitHub secrets
