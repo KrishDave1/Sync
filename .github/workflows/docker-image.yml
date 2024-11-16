@@ -1,0 +1,20 @@
+name: Sync Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js environment
+    - uses: actions/setup-node@v4.1.0
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag sync:$(date +%s)
