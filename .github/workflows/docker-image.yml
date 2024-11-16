@@ -59,7 +59,7 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        IMAGE_NAME=${{ secrets.DOCKER_IMAGE_NAME }}:$(date +%s)
+        IMAGE_NAME=${{ secrets.DOCKER_IMAGE_NAME }}:latest
         docker build -t $IMAGE_NAME .
         docker push $IMAGE_NAME
 
