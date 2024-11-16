@@ -18,6 +18,9 @@ jobs:
     # Step 2: Set up Node.js
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
+      with:
+        node-version: 16 # Specify the Node.js version
+        cache: 'npm'
 
     # Step 3: Install dependencies
     - name: Install dependencies
@@ -26,6 +29,16 @@ jobs:
     # Step 4: Build the Next.js project
     - name: Build the Next.js application
       run: npm run build
+      env:
+        UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+        UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REST_TOKEN }}
+        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+        PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
+        NEXT_PUBLIC_PUSHER_KEY: ${{ secrets.NEXT_PUBLIC_PUSHER_KEY }}
+        PUSHER_SECRET: ${{ secrets.PUSHER_SECRET }}
+        PUSHER_CLUSTER: ${{ secrets.PUSHER_CLUSTER }}
+        NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
 
     # Step 5: Upload build artifacts (optional)
     - name: Upload build artifacts
@@ -46,6 +59,9 @@ jobs:
     # Step 2: Setup Node.js
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
+      with:
+        node-version: 16 # Specify the Node.js version
+        cache: 'npm'
 
     # Step 3: Download build artifacts
     - name: Download build artifacts
@@ -53,9 +69,17 @@ jobs:
       with:
         name: nextjs-build
 
-    # Step 4: Deploy (customize as needed for your deployment target)
-    # Example for deploying to Vercel
+    # Step 4: Deploy to Vercel
     - name: Deploy to Vercel
       run: npx vercel --prod
       env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Add your Vercel token to GitHub secrets
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+        UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+        GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+        PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
+        NEXT_PUBLIC_PUSHER_KEY: ${{ secrets.NEXT_PUBLIC_PUSHER_KEY }}
+        PUSHER_SECRET: ${{ secrets.PUSHER_SECRET }}
+        PUSHER_CLUSTER: ${{ secrets.PUSHER_CLUSTER }}
+        NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
