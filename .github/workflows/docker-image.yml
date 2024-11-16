@@ -59,7 +59,7 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        IMAGE_NAME=${{ secrets.DOCKER_IMAGE_NAME }}:latest
+        IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/repository-name:latest
         docker build \
           --build-arg UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }} \
           --build-arg UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
@@ -73,7 +73,6 @@ jobs:
           --build-arg NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} \
           -t $IMAGE_NAME .
         docker push $IMAGE_NAME
-        IMAGE_NAME=***:latest
 
   deploy:
     runs-on: ubuntu-latest
