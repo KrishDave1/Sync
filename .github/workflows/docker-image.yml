@@ -60,7 +60,7 @@ jobs:
     - name: Build and Push Docker Image
       run: |
         IMAGE_NAME=${{ secrets.DOCKER_IMAGE_NAME }}:latest
-        docker build \
+        docker buildx build \
           --build-arg UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }} \
           --build-arg UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
           --build-arg GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }} \
@@ -72,7 +72,7 @@ jobs:
           --build-arg PUSHER_CLUSTER: ${{ secrets.PUSHER_CLUSTER }} \
           --build-arg NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }} \
           -t $IMAGE_NAME .
-        docker push $IMAGE_NAME
+        docker push $IMAGE_NAME 
 
   deploy:
     runs-on: ubuntu-latest
