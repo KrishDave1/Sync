@@ -63,14 +63,14 @@ jobs:
         docker buildx build \
           --build-arg UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }} \
           --build-arg UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
-          --build-arg GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }} \
-          --build-arg GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }} \
-          --build-arg NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }} \
-          --build-arg PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }} \
-          --build-arg NEXT_PUBLIC_PUSHER_KEY: ${{ secrets.NEXT_PUBLIC_PUSHER_KEY }} \
-          --build-arg PUSHER_SECRET: ${{ secrets.PUSHER_SECRET }} \
-          --build-arg PUSHER_CLUSTER: ${{ secrets.PUSHER_CLUSTER }} \
-          --build-arg NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }} \
+          --build-arg GOOGLE_CLIENT_ID= ${{ secrets.GOOGLE_CLIENT_ID }} \
+          --build-arg GOOGLE_CLIENT_SECRET= ${{ secrets.GOOGLE_CLIENT_SECRET }} \
+          --build-arg NEXTAUTH_SECRET= ${{ secrets.NEXTAUTH_SECRET }} \
+          --build-arg PUSHER_APP_ID= ${{ secrets.PUSHER_APP_ID }} \
+          --build-arg NEXT_PUBLIC_PUSHER_KEY= ${{ secrets.NEXT_PUBLIC_PUSHER_KEY }} \
+          --build-arg PUSHER_SECRET= ${{ secrets.PUSHER_SECRET }} \
+          --build-arg PUSHER_CLUSTER= ${{ secrets.PUSHER_CLUSTER }} \
+          --build-arg NEXTAUTH_URL= ${{ secrets.NEXTAUTH_URL }} \
           -t $IMAGE_NAME .
         docker push $IMAGE_NAME 
 
