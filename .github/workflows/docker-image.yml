@@ -41,21 +41,14 @@ jobs:
         PUSHER_CLUSTER: ${{ secrets.PUSHER_CLUSTER }}
         NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
 
-    - name: Debug Build Output
-      run: |
-        echo "Checking current directory:"
-        pwd
-        echo "Listing files in current directory:"
-        ls -la
-        echo "Checking .next directory:"
-        ls -la .next || echo ".next directory does not exist"
-
     # Step 5: Upload build artifacts (optional)
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
         name: nextjs-build
         path: .next
+        include-hidden-files: true
+        if-no-files-found: warn
 
   deploy:
     runs-on: ubuntu-latest
