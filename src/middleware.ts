@@ -14,7 +14,7 @@ export default withAuth(
 
     const sensitiveRoutes = ["/dashboard"];
     const isAccessingSensitiveRoute = sensitiveRoutes.some((route) =>
-      pathname.startsWith(route)
+      pathname.startsWith(route) && pathname !== "/"
     );
 
     if (isLoginPage) {
@@ -29,9 +29,9 @@ export default withAuth(
       return Response.redirect(new URL("/login", req.url));
     }
 
-    if (pathname === "/") {
-      return Response.redirect(new URL("/dashboard", req.url));
-    }
+    // if (pathname === "/") {
+    //   return Response.redirect(new URL("/dashboard", req.url));
+    // }
 
     return NextResponse.next();
   },
