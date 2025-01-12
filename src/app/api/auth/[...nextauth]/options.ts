@@ -79,5 +79,17 @@ export const authOptions: NextAuthOptions = {
       return "/dashboard";
     },
   },
+  
   secret: process.env.NEXTAUTH_SECRET,
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "strict",
+        path: "/",
+        secure: process.env.NODE_ENV === "production", // Ensure cookies are secure in production
+      },
+    },
+  },
 };
