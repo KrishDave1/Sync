@@ -2,8 +2,13 @@
 
 import Pusher from "pusher-js";
 
-const APP_KEY = process.env.NEXT_PUBLIC_PUSHER_KEY as string;
-const CLUSTER = process.env.PUSHER_CLUSTER;
+// Initialize Pusher
+const APP_KEY = process.env.NEXT_PUBLIC_PUSHER_KEY as string || '';
+const CLUSTER = process.env.PUSHER_CLUSTER as string || '';
+
+if (!APP_KEY || !CLUSTER) {
+  throw new Error("Pusher configuration is missing.");
+}
 
 // WebRTC variables
 let peerConnection: RTCPeerConnection | null = null;
