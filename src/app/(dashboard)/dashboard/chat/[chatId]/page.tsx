@@ -10,6 +10,7 @@ import { FC } from "react";
 import Image from "next/image";
 import Messages from "@/components/Messages";
 import ChatInput from "@/components/ChatInput";
+import { useRouter } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -30,7 +31,6 @@ export async function generateMetadata({
 
   return { title: `Sync | ${chatPartner.name} chat` };
 }
-
 
 interface PageProps {
   params: {
@@ -59,7 +59,7 @@ async function getChatMessages(chatId: string) {
   }
 }
 
-const page: FC<PageProps> = async ({ params }: PageProps) => {
+const Page: FC<PageProps> = async ({ params }: PageProps) => {
   const { chatId } = params;
   const session = await getServerSession(authOptions);
 
@@ -85,6 +85,8 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
   const chatPartner = JSON.parse(chatPartnerRaw) as User;
 
   const initialMessages = await getChatMessages(chatId);
+
+  const roomId = `${user.id}--${chatPartnerId}`;
 
   return (
     <div className='flex flex-col h-full'>
@@ -114,7 +116,7 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className='flex-1 overflow-y-auto'>
         <Messages
           initialMessages={initialMessages}
           chatId={chatId}
@@ -125,10 +127,10 @@ const page: FC<PageProps> = async ({ params }: PageProps) => {
       </div>
 
       <div className='bottom-0 mt-auto'>
-        <ChatInput chatPartner={chatPartner} chatId={chatId} />
+        <ChatInput userId={session.user.id} chatPartner={chatPartner} chatId={chatId} roomId={roomId} />
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

@@ -4,17 +4,27 @@
 import { FC, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "./ui/Button";
-import { Loader2 } from "lucide-react";
+import { Loader2, VideoIcon } from "lucide-react";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { Session } from "inspector";
 
 interface ChatInputProps {
   chatPartner: User;
+  userId: string;
   chatId: string;
+  roomId: string;
 }
 
-const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
+const ChatInput: FC<ChatInputProps> = ({
+  chatPartner,
+  userId,
+  chatId,
+  roomId,
+}) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>("");
@@ -48,6 +58,26 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
     }
   };
 
+  const videocall = async () => {
+    try {
+      await axios.post("/api/message/send", {
+        text: `Video Call Invitation: Join me at http://localhost:3000/dashboard/videocall/${roomId}`,
+        type: "video-invite",
+        chatId,
+        initiatorId: userId,
+      });
+
+      router.push(`/dashboard/videocall/${roomId}`);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to start video call",
+        variant: "destructive",
+      });
+    }
+  };
+
+
   return (
     <div className='border-t border-gray-200 p-4 mb-2 sm:mb-0'>
       <div className='relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600'>
@@ -74,7 +104,11 @@ const ChatInput: FC<ChatInputProps> = ({ chatPartner, chatId }) => {
           <div className='py-px'>{/* <div className='h-9' /> */}</div>
         </div>
         <div className='absolute right-0 bottom-0 flex justify-between py-2 pl-3 pr-2'>
-          <div className='flex-shrink-0'>
+          <div className='flex-shrink-0 flex gap-2'>
+            <Button variant='ghost' size='icon' onClick={videocall}>
+              <VideoIcon className='h-5 w-5' />
+            </Button>
+
             {isLoading ? (
               <Button disabled>
                 <Loader2 className='mr-2 h-5 w-5 animate-spin' />
