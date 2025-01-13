@@ -13,26 +13,40 @@ const VideoCallComponent = ({ userId }: VideoCallComponentProps) => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const [isInitiator, setIsInitiator] = useState(false);
+  const [roomId, setRoomId] = useState<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
     // Extract roomId from pathname
-    const roomId = pathname.split("/").pop() || "";
+    if (!pathname) return;
+    const extractedRoomId = pathname.split("/").pop() || "";
+    setRoomId(extractedRoomId);
 
-    // Check if current user is initiator by comparing roomId format
-    // RoomId format: initiatorId--receiverId
-    const [initiatorId] = roomId.split("--");
+    // Check if the current user is the initiator
+    const [initiatorId] = extractedRoomId.split("--");
     const isUserInitiator = initiatorId === userId;
     setIsInitiator(isUserInitiator);
-
-    if (localVideoRef.current && remoteVideoRef.current) {
-      if (isUserInitiator) {
-        startCall(localVideoRef.current, remoteVideoRef.current);
-      } else {
-        joinCall(localVideoRef.current, remoteVideoRef.current);
-      }
-    }
   }, [pathname, userId]);
+
+  useEffect(() => {
+    if (!roomId || !localVideoRef.current || !remoteVideoRef.current) return;
+
+    // Start or join the call based on the user's role
+    const initiateCall = async () => {
+      try {
+        if (isInitiator) {
+          await startCall(localVideoRef.current!, remoteVideoRef.current!);
+        } else {
+          await joinCall(localVideoRef.current!, remoteVideoRef.current!);
+        }
+      } catch (error) {
+        console.error("Error initializing video call:", error);
+        alert("Failed to set up the video call. Please try again.");
+      }
+    };
+
+    initiateCall();
+  }, [roomId, isInitiator]);
 
   return (
     <div className='flex flex-col items-center justify-center h-screen'>
