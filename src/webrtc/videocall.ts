@@ -121,6 +121,7 @@ export async function joinCall(
     channel.bind(
       "client-offer",
       async (data: { offer: RTCSessionDescription }) => {
+        if (!peerConnection) return;
         await peerConnection?.setRemoteDescription(data.offer);
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
