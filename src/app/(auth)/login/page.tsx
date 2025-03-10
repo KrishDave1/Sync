@@ -72,15 +72,6 @@ const Login: FC<PageProps> = ({}) => {
           </svg>
           Continue with Google
         </Button>
-        <div className='mt-6 text-center text-gray-600'>
-          Don’t have an account?{" "}
-          <a
-            href='/register'
-            className='text-indigo-700 font-semibold hover:underline'
-          >
-            Sign up
-          </a>
-        </div>
       </div>
     </div>
   );
