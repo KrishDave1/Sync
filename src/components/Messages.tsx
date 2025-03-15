@@ -26,9 +26,7 @@ const Messages: FC<MessagesProps> = ({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const scrollDownRef = useRef<HTMLDivElement | null>(null);
 
-  const formatTimestamp = (timestamp: number) => {
-    return format(timestamp, "HH:mm");
-  };
+  const formatTimestamp = (timestamp: number) => format(timestamp, "HH:mm");
 
   useEffect(() => {
     pusherClient.subscribe(toPusherKey(`chat:${chatId}`));
@@ -58,14 +56,14 @@ const Messages: FC<MessagesProps> = ({
 
         // Check which is last message for the user
         const hasNextMessageFromSameUser =
-          messages[index - 1]?.senderId === messages[index].senderId;
+          messages[index - 1]?.senderId === message.senderId;
 
         const currentMessageDate = new Date(message.timestamp);
-        const previousMessageDate = messages[index - 1]
-          ? new Date(messages[index - 1].timestamp)
+        const previousMessageDate = messages[index + 1]
+          ? new Date(messages[index + 1].timestamp)
           : null;
 
-        // Show date separator only if it's the first message of the day
+        // Show date separator only for the first message of the day
         const showDateSeparator =
           !previousMessageDate ||
           !isSameDay(currentMessageDate, previousMessageDate);
