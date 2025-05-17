@@ -57,19 +57,26 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and Push Docker Image
-      run: |
-        IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/sync:latest
-        docker build \
-          --build-arg UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }} \
-          --build-arg UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }} \
-          --build-arg GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
-          --build-arg GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
-          --build-arg NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} \
-          --build-arg PUSHER_APP_ID=${{ secrets.PUSHER_APP_ID }} \
-          --build-arg NEXT_PUBLIC_PUSHER_KEY=${{ secrets.NEXT_PUBLIC_PUSHER_KEY }} \
-          --build-arg PUSHER_SECRET=${{ secrets.PUSHER_SECRET }} \
-          --build-arg PUSHER_CLUSTER=${{ secrets.PUSHER_CLUSTER }} \
-          --build-arg NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} \
-          -t $IMAGE_NAME .
-        docker push $IMAGE_NAME
+      # Step 7: Set up Docker Buildx
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Step 8: Build and Push Multi-Platform Docker Image
+    - name: Build and Push Docker Image (Multi-Platform)
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        platforms: linux/amd64,linux/arm64
+        tags: ${{ secrets.DOCKER_USERNAME }}/sync:latest
+        build-args: |
+          UPSTASH_REDIS_REST_URL=${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN=${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+          PUSHER_APP_ID=${{ secrets.PUSHER_APP_ID }}
+          NEXT_PUBLIC_PUSHER_KEY=${{ secrets.NEXT_PUBLIC_PUSHER_KEY }}
+          PUSHER_SECRET=${{ secrets.PUSHER_SECRET }}
+          PUSHER_CLUSTER=${{ secrets.PUSHER_CLUSTER }}
+          NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}
