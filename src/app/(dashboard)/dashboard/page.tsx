@@ -30,7 +30,10 @@ const Dashboard = async () => {
         -1
       )) as string[];
 
-      const lastMessage = JSON.parse(lastMessageRaw) as Message;
+      let lastMessage = null;
+      if (lastMessageRaw !== undefined) {
+        lastMessage = JSON.parse(lastMessageRaw) as Message;
+      }
       return {
         ...friend,
         lastMessage,
@@ -70,11 +73,11 @@ const Dashboard = async () => {
                 </h3>
                 <p className="text-sm text-gray-600 truncate">
                   <span className="font-semibold">
-                    {friend.lastMessage.senderId === session.user.id
+                    {friend.lastMessage && friend.lastMessage.senderId === session.user.id
                       ? "You: "
                       : ""}
                   </span>
-                  {friend.lastMessage.text}
+                  {friend.lastMessage ? friend.lastMessage.text : "No messages yet."}
                 </p>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-400 ml-auto group-hover:text-indigo-600" />
